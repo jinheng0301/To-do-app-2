@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:todooo/extensions/space_exs.dart';
 import 'package:todooo/utils/app_colors.dart';
 import 'package:todooo/utils/app_string.dart';
+import 'package:todooo/utils/constatns.dart';
 import 'package:todooo/view/home/widgets/fab.dart';
+import 'package:todooo/view/home/components/task_widget.dart';
+import 'package:lottie/lottie.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -14,6 +16,8 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final List<int> testing = [];
+
   @override
   Widget build(BuildContext context) {
     TextTheme theme = Theme.of(context).textTheme;
@@ -81,103 +85,49 @@ class _HomeViewState extends State<HomeView> {
               child: SizedBox(
                 height: 745,
                 width: double.infinity,
-                child: ListView.builder(
-                  itemCount: 20,
-                  itemBuilder: (context, index) {
-                    return AnimatedContainer(
-                      margin: EdgeInsets.symmetric(
-                        vertical: 8,
-                        horizontal: 16,
-                      ),
-                      duration: Duration(milliseconds: 600),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(8),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(.1),
-                            offset: Offset(0, 4),
-                            blurRadius: 10,
+                child: testing.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: testing.length,
+                        itemBuilder: (context, index) {
+                          return Dismissible(
+                            direction: DismissDirection.horizontal,
+                            onDismissed: (direction) {
+                              // remove current task from DB
+                            },
+                            background: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.grey,
+                                ),
+                                8.w,
+                                Text(
+                                  AppString.deletedTask,
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            key: Key(
+                              index.toString(),
+                            ),
+                            child: TaskWidget(),
+                          );
+                        },
+                      )
+                    : Column(
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            child: Lottie.asset(
+                              lottieURL,
+                              animate: testing.isNotEmpty ? false : true,
+                            ),
                           ),
                         ],
                       ),
-                      child: ListTile(
-                        // Check icon
-                        leading: GestureDetector(
-                          onTap: () {
-                            // Check or uncheck the task
-                          },
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 600),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: .8,
-                              ),
-                            ),
-                            child: Icon(
-                              Icons.check,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-
-                        // Task title
-                        title: Padding(
-                          padding: const EdgeInsets.only(bottom: 5, top: 3),
-                          child: Text(
-                            'Done',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              decoration: TextDecoration.lineThrough,
-                            ),
-                          ),
-                        ),
-
-                        // Task description
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Descriptions',
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-
-                            // Data of task
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    'Date',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                  Text(
-                                    'SubDate',
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
               ),
             ),
           ],
