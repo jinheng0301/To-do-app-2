@@ -13,18 +13,18 @@ class TaskWidget extends StatelessWidget {
         // Navigate to task view to see task details
       },
       child: AnimatedContainer(
-        margin: EdgeInsets.symmetric(
+        margin: const EdgeInsets.symmetric(
           vertical: 8,
           horizontal: 16,
         ),
-        duration: Duration(milliseconds: 600),
+        duration: const Duration(milliseconds: 600),
         decoration: BoxDecoration(
           color: AppColors.primaryColor.withOpacity(0.15),
           borderRadius: BorderRadius.circular(8),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(.1),
-              offset: Offset(0, 4),
+              offset: const Offset(0, 4),
               blurRadius: 10,
             ),
           ],
@@ -36,7 +36,7 @@ class TaskWidget extends StatelessWidget {
               // Check or uncheck the task
             },
             child: AnimatedContainer(
-              duration: Duration(milliseconds: 600),
+              duration: const Duration(milliseconds: 600),
               decoration: BoxDecoration(
                 color: AppColors.primaryColor,
                 shape: BoxShape.circle,
@@ -45,7 +45,7 @@ class TaskWidget extends StatelessWidget {
                   width: .8,
                 ),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.check,
                 color: Colors.white,
               ),
@@ -53,8 +53,8 @@ class TaskWidget extends StatelessWidget {
           ),
       
           // Task title
-          title: Padding(
-            padding: const EdgeInsets.only(bottom: 5, top: 3),
+          title: const Padding(
+            padding: EdgeInsets.only(bottom: 5, top: 3),
             child: Text(
               'Done',
               style: TextStyle(
@@ -66,7 +66,7 @@ class TaskWidget extends StatelessWidget {
           ),
       
           // Task description
-          subtitle: Column(
+          subtitle: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(

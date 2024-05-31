@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todooo/utils/app_colors.dart';
+import 'package:todooo/view/home/widgets/task_view.dart';
 
 class FAB extends StatelessWidget {
   const FAB({
@@ -11,6 +12,12 @@ class FAB extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         print('task view');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TaskView(),
+          ),
+        );
       },
       child: Material(
         borderRadius: BorderRadius.circular(15),
