@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todooo/view/home/components/task_widget.dart';
 import 'package:todooo/view/home/home_view.dart';
-import 'package:todooo/view/home/widgets/task_view.dart';
 
 void main() {
   runApp(const MyApp());

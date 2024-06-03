@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todooo/utils/app_colors.dart';
-import 'package:todooo/view/home/widgets/task_view.dart';
+import 'package:todooo/view/tasks/widgets/task_view.dart';
 
 class FAB extends StatelessWidget {
   const FAB({

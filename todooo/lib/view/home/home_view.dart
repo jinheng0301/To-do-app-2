@@ -5,10 +5,10 @@ import 'package:todooo/extensions/space_exs.dart';
 import 'package:todooo/utils/app_colors.dart';
 import 'package:todooo/utils/app_string.dart';
 import 'package:todooo/utils/constants.dart';
-import 'package:todooo/view/home/components/custom_drawer.dart';
-import 'package:todooo/view/home/components/home_app_bar.dart';
-import 'package:todooo/view/home/widgets/fab.dart';
-import 'package:todooo/view/home/components/task_widget.dart';
+import 'package:todooo/view/tasks/components/custom_drawer.dart';
+import 'package:todooo/view/tasks/components/home_app_bar.dart';
+import 'package:todooo/view/tasks/widgets/fab.dart';
+import 'package:todooo/view/tasks/components/task_widget.dart';
 import 'package:lottie/lottie.dart';
 
 class HomeView extends StatefulWidget {
@@ -19,7 +19,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final List<int> testing = [2, 323, 23];
+  final List<int> testing = [];
   final GlobalKey<SliderDrawerState> drawerKey = GlobalKey<SliderDrawerState>();
 
   @override
