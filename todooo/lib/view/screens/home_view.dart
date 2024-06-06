@@ -2,13 +2,14 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:todooo/extensions/space_exs.dart';
+import 'package:todooo/models/task.dart';
 import 'package:todooo/utils/app_colors.dart';
 import 'package:todooo/utils/app_string.dart';
 import 'package:todooo/utils/constants.dart';
-import 'package:todooo/view/tasks/components/custom_drawer.dart';
-import 'package:todooo/view/tasks/components/home_app_bar.dart';
-import 'package:todooo/view/tasks/widgets/fab.dart';
-import 'package:todooo/view/tasks/components/task_widget.dart';
+import 'package:todooo/view/components/custom_drawer.dart';
+import 'package:todooo/view/components/home_app_bar.dart';
+import 'package:todooo/view/widgets/fab.dart';
+import 'package:todooo/view/widgets/task_widget.dart';
 import 'package:lottie/lottie.dart';
 
 class HomeView extends StatefulWidget {
@@ -19,7 +20,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final List<int> testing = [];
+  final List<int> testing = [1, 2, 3, 4];
   final GlobalKey<SliderDrawerState> drawerKey = GlobalKey<SliderDrawerState>();
 
   @override
@@ -48,7 +49,7 @@ class _HomeViewState extends State<HomeView> {
       ),
 
       // FAB
-      floatingActionButton: const FAB(),
+      floatingActionButton: FAB(),
     );
   }
 
@@ -140,7 +141,16 @@ class _HomeViewState extends State<HomeView> {
                           key: Key(
                             index.toString(),
                           ),
-                          child: const TaskWidget(),
+                          child: TaskWidget(
+                            task: Task(
+                              id: '1',
+                              title: 'Home task',
+                              subtitle: 'cleaning the room',
+                              createdAtTime: DateTime.now(),
+                              createdAtDate: DateTime.now(),
+                              isCompleted: false,
+                            ),
+                          ),
                         );
                       },
                     )

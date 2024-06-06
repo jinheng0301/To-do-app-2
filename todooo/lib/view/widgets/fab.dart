@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todooo/models/task.dart';
 import 'package:todooo/utils/app_colors.dart';
-import 'package:todooo/view/tasks/widgets/task_view.dart';
+import 'package:todooo/view/screens/task_view.dart';
 
 class FAB extends StatelessWidget {
   const FAB({
@@ -9,13 +10,21 @@ class FAB extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final titleTaskController = TextEditingController();
+    final descriptionTaskController = TextEditingController();
+    const Task? task = null;
+
     return GestureDetector(
       onTap: () {
         print('task view');
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => TaskView(),
+            builder: (context) => TaskView(
+              titleTaskController: titleTaskController,
+              descriptionTaskController: descriptionTaskController,
+              task: task,
+            ),
           ),
         );
       },

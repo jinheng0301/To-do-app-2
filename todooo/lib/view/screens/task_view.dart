@@ -1,23 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:todooo/extensions/space_exs.dart';
+import 'package:todooo/models/task.dart';
 import 'package:todooo/utils/app_colors.dart';
 import 'package:todooo/utils/app_string.dart';
-import 'package:todooo/view/tasks/components/task_view_app_bar.dart';
-import 'package:todooo/view/tasks/widgets/date_time_selection_widget.dart';
-import 'package:todooo/view/tasks/widgets/repeat%20_textfield.dart';
+import 'package:todooo/view/components/task_view_app_bar.dart';
+import 'package:todooo/view/widgets/date_time_selection_widget.dart';
+import 'package:todooo/view/widgets/repeat_textfield.dart';
 
 class TaskView extends StatefulWidget {
-  const TaskView({super.key});
+  TaskView({
+    required this.titleTaskController,
+    required this.descriptionTaskController,
+    required this.task,
+  });
+
+  final TextEditingController titleTaskController;
+  final TextEditingController descriptionTaskController;
+  final Task? task;
 
   @override
   State<TaskView> createState() => _TaskViewState();
 }
 
 class _TaskViewState extends State<TaskView> {
-  final TextEditingController titleTaskController = TextEditingController();
-  final TextEditingController descriptionTaskController =
-      TextEditingController();
+  var title;
+  var subTitle;
+  DateTime? time;
+  DateTime? date;
+
+  // if any task already exsit then return true otherwise false
+  bool isTaskAlreadyExist() {
+    return widget.titleTaskController.text.isNotEmpty ||
+        widget.descriptionTaskController.text.isNotEmpty;
+  }
+
+  /// Show Selected Time As DateTime Format
+  DateTime getInitialTime(DateTime? time) {
+    return time ?? widget.task?.createdAtTime ?? DateTime.now();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +80,7 @@ class _TaskViewState extends State<TaskView> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          // Delete currentn task button
+          // Delete current task button
           MaterialButton(
             onPressed: () {
               print('tapped');
@@ -127,16 +148,49 @@ class _TaskViewState extends State<TaskView> {
           ),
 
           // task title
-          repTextField(
-            controller: titleTaskController,
+          RepTextField(
+            controller: widget.titleTaskController,
             isForDescription: true,
+            onFieldSubmitted: (String inputTitle) {
+              title = inputTitle;
+            },
+            onChanged: (String inputTitle) {
+              title = inputTitle;
+            },
           ),
 
           10.h,
 
+          // task subTitle
+          RepTextField(
+            controller: widget.descriptionTaskController,
+            isForDescription: true,
+            onFieldSubmitted: (String inputSubTitle) {
+              subTitle = inputSubTitle;
+            },
+            onChanged: (String inputSubTitle) {
+              subTitle = inputSubTitle;
+            },
+          ),
+
           // Time selection
           DateTimeSelectionWidget(
-            onTap: () {},
+            onTap: () {
+              DatePicker.showTimePicker(context,
+                  showTitleActions: true,
+                  showSecondsColumn: false,
+                  onChanged: (_) {}, onConfirm: (selectedTime) {
+                setState(() {
+                  if (widget.task?.createdAtTime == null) {
+                    time = selectedTime;
+                  } else {
+                    widget.task!.createdAtTime = selectedTime;
+                  }
+                });
+
+                FocusManager.instance.primaryFocus?.unfocus();
+              }, currentTime: getInitialTime(time));
+            },
             title: AppString.timeString,
           ),
 
@@ -176,7 +230,9 @@ class _TaskViewState extends State<TaskView> {
           ),
           RichText(
             text: TextSpan(
-              text: AppString.addNewTask,
+              text: isTaskAlreadyExist()
+                  ? AppString.addNewTask
+                  : AppString.updateCurrentTask,
               style: textTheme.titleLarge,
               children: [
                 TextSpan(

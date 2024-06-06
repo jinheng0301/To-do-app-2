@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:todooo/utils/app_string.dart';
 
-class repTextField extends StatelessWidget {
-  const repTextField({
+class RepTextField extends StatelessWidget {
+  const RepTextField({
     super.key,
     required this.controller,
     this.isForDescription = false,
+    required this.onFieldSubmitted,
+    required this.onChanged,
   });
 
-  final TextEditingController controller;
+  final TextEditingController? controller;
+  final Function(String)? onFieldSubmitted;
+  final Function(String)? onChanged;
   final bool isForDescription;
 
   @override
@@ -43,8 +47,8 @@ class repTextField extends StatelessWidget {
               ),
             ),
           ),
-          onFieldSubmitted: (value) {},
-          onChanged: (value) {},
+          onFieldSubmitted: onFieldSubmitted,
+          onChanged: onChanged,
         ),
       ),
     );
