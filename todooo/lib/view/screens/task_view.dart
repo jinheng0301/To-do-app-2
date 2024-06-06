@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:todooo/extensions/space_exs.dart';
 import 'package:todooo/models/task.dart';
 import 'package:todooo/utils/app_colors.dart';
@@ -35,9 +36,55 @@ class _TaskViewState extends State<TaskView> {
         widget.descriptionTaskController.text.isNotEmpty;
   }
 
-  /// Show Selected Time As DateTime Format
+  // Show Selected Time As DateTime Format
   DateTime getInitialTime(DateTime? time) {
     return time ?? widget.task?.createdAtTime ?? DateTime.now();
+  }
+
+  String showTime(DateTime? time) {
+    if (widget.task?.createdAtTime == null) {
+      if (time == null) {
+        return DateFormat('hh:mm a').format(DateTime.now()).toString();
+      } else {
+        return DateFormat('hh:mm a').format(time).toString();
+      }
+    } else {
+      return DateFormat('hh:mm a')
+          .format(widget.task!.createdAtTime)
+          .toString();
+    }
+  }
+
+  String showDate(DateTime? date) {
+    if (widget.task?.createdAtDate == null) {
+      if (date == null) {
+        return DateFormat.yMMMEd().format(DateTime.now()).toString();
+      } else {
+        return DateFormat.yMMMEd().format(date).toString();
+      }
+    } else {
+      return DateFormat.yMMMEd().format(widget.task!.createdAtDate).toString();
+    }
+  }
+
+  DateTime showDateAsDateTime(DateTime? date) {
+    if (widget.task?.createdAtDate == null) {
+      if (date == null) {
+        return DateTime.now();
+      } else {
+        return date;
+      }
+    } else {
+      return widget.task!.createdAtDate;
+    }
+  }
+
+  // Main function for creating or updating tasks
+  dynamic isTaskAlreadyExistUpdateOtherwiseCreate() {
+    if (widget.titleTaskController.text.isNotEmpty ||
+        widget.descriptionTaskController.text.isNotEmpty) {
+      try {} catch (e) {}
+    }
   }
 
   @override
@@ -191,7 +238,7 @@ class _TaskViewState extends State<TaskView> {
                 FocusManager.instance.primaryFocus?.unfocus();
               }, currentTime: getInitialTime(time));
             },
-            title: AppString.timeString,
+            title: showTime(time),
           ),
 
           // Date selection
@@ -212,7 +259,7 @@ class _TaskViewState extends State<TaskView> {
                 locale: LocaleType.en,
               );
             },
-            title: AppString.dateString,
+            title: showDate(date),
           ),
         ],
       ),
