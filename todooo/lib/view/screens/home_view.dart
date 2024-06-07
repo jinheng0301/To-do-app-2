@@ -1,7 +1,9 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
+import 'package:hive/hive.dart';
 import 'package:todooo/extensions/space_exs.dart';
+import 'package:todooo/main.dart';
 import 'package:todooo/models/task.dart';
 import 'package:todooo/utils/app_colors.dart';
 import 'package:todooo/utils/app_string.dart';
@@ -20,40 +22,70 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  final List<int> testing = [1, 2, 3, 4];
   final GlobalKey<SliderDrawerState> drawerKey = GlobalKey<SliderDrawerState>();
+
+  // check value of circle indicator
+  dynamic valueOfIndicator(List<Task> task) {
+    if (task.isNotEmpty) {
+      return task.length;
+    } else {
+      return 3;
+    }
+  }
+
+  // check done tasks
+  int checkDoneTask(List<Task> tasks) {
+    int i = 0;
+    for (Task doneTask in tasks) {
+      if (doneTask.isCompleted) {
+        i++;
+      }
+    }
+    return i;
+  }
 
   @override
   Widget build(BuildContext context) {
     TextTheme theme = Theme.of(context).textTheme;
+    final base = BaseWidget.of(context);
 
-    return Scaffold(
-      backgroundColor: Colors.white,
+    return ValueListenableBuilder(
+      valueListenable: base.dataStore.listenToTask(),
+      builder: (context, Box<Task> box, Widget? child) {
+        var tasks = box.values.toList();
 
-      // Body
-      body: SliderDrawer(
-        key: drawerKey,
-        isDraggable: false,
-        animationDuration: 1000,
+        // for sorting list by date
+        tasks.sort((a, b) => a.createdAtDate.compareTo(b.createdAtDate));
 
-        // Drawer
-        slider: CustomDrawer(),
+        return Scaffold(
+          backgroundColor: Colors.white,
 
-        // Home app bar
-        appBar: HomeAppBar(
-          drawerKey: drawerKey,
-        ),
+          // Body
+          body: SliderDrawer(
+            key: drawerKey,
+            isDraggable: false,
+            animationDuration: 1000,
 
-        // Main body
-        child: _buildHomeBody(theme),
-      ),
+            // Drawer
+            slider: CustomDrawer(),
 
-      // FAB
-      floatingActionButton: FAB(),
+            // Home app bar
+            appBar: HomeAppBar(
+              drawerKey: drawerKey,
+            ),
+
+            // Main body
+            child: _buildHomeBody(theme, base, tasks),
+          ),
+
+          // FAB
+          floatingActionButton: FAB(),
+        );
+      },
     );
   }
 
-  SizedBox _buildHomeBody(TextTheme theme) {
+  SizedBox _buildHomeBody(TextTheme theme, BaseWidget base, List<Task> tasks) {
     return SizedBox(
       width: double.infinity,
       height: double.infinity,
@@ -68,11 +100,11 @@ class _HomeViewState extends State<HomeView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Progress indicator
-                const SizedBox(
+                SizedBox(
                   width: 30,
                   height: 30,
                   child: CircularProgressIndicator(
-                    value: 1 / 3,
+                    value: checkDoneTask(tasks) / valueOfIndicator(tasks),
                     backgroundColor: Colors.grey,
                     valueColor: AlwaysStoppedAnimation(
                       AppColors.primaryColor,
@@ -90,7 +122,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                     3.h,
                     Text(
-                      '1 of 3 task',
+                      '${checkDoneTask(tasks)} of ${tasks.length} task',
                       style: theme.titleMedium,
                     ),
                   ],
@@ -113,14 +145,18 @@ class _HomeViewState extends State<HomeView> {
             child: SizedBox(
               height: 745,
               width: double.infinity,
-              child: testing.isNotEmpty
+              child: tasks.isNotEmpty
                   ? ListView.builder(
-                      itemCount: testing.length,
+                      itemCount: tasks.length,
                       itemBuilder: (context, index) {
+                        // get single task for showing in the list
+                        var task = tasks[index];
+
                         return Dismissible(
                           direction: DismissDirection.horizontal,
                           onDismissed: (direction) {
                             // remove current task from DB
+                            base.dataStore.deleteTask(task: task);
                           },
                           background: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -138,19 +174,8 @@ class _HomeViewState extends State<HomeView> {
                               ),
                             ],
                           ),
-                          key: Key(
-                            index.toString(),
-                          ),
-                          child: TaskWidget(
-                            task: Task(
-                              id: '1',
-                              title: 'Home task',
-                              subtitle: 'cleaning the room',
-                              createdAtTime: DateTime.now(),
-                              createdAtDate: DateTime.now(),
-                              isCompleted: false,
-                            ),
-                          ),
+                          key: Key(task.id),
+                          child: TaskWidget(task: task),
                         );
                       },
                     )
@@ -163,7 +188,7 @@ class _HomeViewState extends State<HomeView> {
                             height: 200,
                             child: Lottie.asset(
                               lottieURL,
-                              animate: testing.isNotEmpty ? false : true,
+                              animate: tasks.isNotEmpty ? false : true,
                             ),
                           ),
                         ),

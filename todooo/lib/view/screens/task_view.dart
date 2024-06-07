@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:todooo/extensions/space_exs.dart';
+import 'package:todooo/main.dart';
 import 'package:todooo/models/task.dart';
 import 'package:todooo/utils/app_colors.dart';
 import 'package:todooo/utils/app_string.dart';
+import 'package:todooo/utils/constants.dart';
 import 'package:todooo/view/components/task_view_app_bar.dart';
 import 'package:todooo/view/widgets/date_time_selection_widget.dart';
 import 'package:todooo/view/widgets/repeat_textfield.dart';
@@ -81,10 +83,39 @@ class _TaskViewState extends State<TaskView> {
 
   // Main function for creating or updating tasks
   dynamic isTaskAlreadyExistUpdateOtherwiseCreate() {
+    // update current task
     if (widget.titleTaskController.text.isNotEmpty ||
         widget.descriptionTaskController.text.isNotEmpty) {
-      try {} catch (e) {}
+      try {
+        widget.titleTaskController.text = title;
+        widget.descriptionTaskController.text = subTitle;
+      } catch (e) {
+        // if user want to update task but entered nothing we will show this warning
+        updateTaskWarning(context);
+      }
     }
+    // create a new task
+    else {
+      if (title != null && subTitle != null) {
+        var task = Task.create(
+          title: title,
+          subtitle: subTitle,
+          createdAtDate: date,
+          createdAtTime: time,
+        );
+
+        // adding this new task to hive db using inherited widget
+        BaseWidget.of(context).dataStore.addTask(task: task);
+        Navigator.pop(context);
+      } else {
+        emptyWarning(context);
+      }
+    }
+  }
+
+  // delete task
+  dynamic deleteTask() {
+    return widget.task?.delete();
   }
 
   @override
@@ -125,39 +156,43 @@ class _TaskViewState extends State<TaskView> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: isTaskAlreadyExist()
+            ? MainAxisAlignment.center
+            : MainAxisAlignment.spaceEvenly,
         children: [
-          // Delete current task button
-          MaterialButton(
-            onPressed: () {
-              print('tapped');
-            },
-            height: 60,
-            minWidth: 150,
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.close,
-                  color: AppColors.primaryColor,
+          isTaskAlreadyExist()
+              ? Container()
+
+              // Delete current task button
+              : MaterialButton(
+                  onPressed: () {
+                    deleteTask();
+                    Navigator.pop(context);
+                  },
+                  height: 60,
+                  minWidth: 150,
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.close,
+                        color: AppColors.primaryColor,
+                      ),
+                      5.h,
+                      Text(
+                        AppString.deleteTask,
+                        style: TextStyle(color: AppColors.primaryColor),
+                      ),
+                    ],
+                  ),
                 ),
-                5.h,
-                Text(
-                  AppString.deleteTask,
-                  style: TextStyle(color: AppColors.primaryColor),
-                ),
-              ],
-            ),
-          ),
 
           // Add or update task
           MaterialButton(
-            onPressed: () {
-              print('tapped');
-            },
+            onPressed: () => isTaskAlreadyExistUpdateOtherwiseCreate(),
             height: 60,
             minWidth: 150,
             color: AppColors.primaryColor,
@@ -167,7 +202,9 @@ class _TaskViewState extends State<TaskView> {
             child: Row(
               children: [
                 Text(
-                  AppString.addTaskString,
+                  isTaskAlreadyExist()
+                      ? AppString.addTaskString
+                      : AppString.updateTaskString,
                   style: TextStyle(color: Colors.white),
                 ),
               ],
@@ -182,7 +219,7 @@ class _TaskViewState extends State<TaskView> {
       TextTheme textTheme, BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 530,
+      height: 400,
       child: Column(
         children: [
           // Title of text field

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todooo/models/task.dart';
 import 'package:todooo/utils/app_colors.dart';
 import 'package:intl/intl.dart';
+import 'package:todooo/view/screens/task_view.dart';
 
 class TaskWidget extends StatefulWidget {
   late final Task task;
@@ -12,7 +13,8 @@ class TaskWidget extends StatefulWidget {
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  final TextEditingController _textEditingControllerForTitle = TextEditingController();
+  final TextEditingController _textEditingControllerForTitle =
+      TextEditingController();
   final TextEditingController _textEditingControllerForSubtitle =
       TextEditingController();
 
@@ -37,6 +39,15 @@ class _TaskWidgetState extends State<TaskWidget> {
     return GestureDetector(
       onTap: () {
         // Navigate to task view to see task details
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => TaskView(
+              titleTaskController: _textEditingControllerForTitle,
+              descriptionTaskController: _textEditingControllerForSubtitle,
+              task: widget.task,
+            ),
+          ),
+        );
       },
       child: AnimatedContainer(
         margin: const EdgeInsets.symmetric(
@@ -62,6 +73,8 @@ class _TaskWidgetState extends State<TaskWidget> {
           leading: GestureDetector(
             onTap: () {
               // Check or uncheck the task
+              widget.task.isCompleted = !widget.task.isCompleted;
+              widget.task.save();
             },
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 600),

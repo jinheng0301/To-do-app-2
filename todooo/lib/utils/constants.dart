@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ftoast/ftoast.dart';
 import 'package:panara_dialogs/panara_dialogs.dart';
+import 'package:todooo/main.dart';
 import 'package:todooo/utils/app_string.dart';
 
 /// lottie asset address
@@ -59,7 +60,7 @@ dynamic deleteAlltask(BuildContext context) {
     },
     onTapConfirm: () {
       // clear all box data using this command later on
-      // BaseWidget.of(context).dataStore.box.clear();
+      BaseWidget.of(context).dataStore.box.clear();
       Navigator.pop(context);
     },
     panaraDialogType: PanaraDialogType.error,
