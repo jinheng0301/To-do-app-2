@@ -38,9 +38,6 @@ class CustomDrawer extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 50,
-            backgroundImage: NetworkImage(
-              'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.alamy.com%2Fstock-image-avatar-of-cute-little-bird-round-icon-162319999.html&psig=AOvVaw0HEWL-ZBau6sdv6EKXY4hy&ust=1717234780917000&source=images&cd=vfe&opi=89978449&ved=0CBIQjRxqFwoTCPCg_prMt4YDFQAAAAAdAAAAABAE',
-            ),
           ),
           8.h,
           Text(

@@ -54,6 +54,8 @@ class _HomeViewState extends State<HomeView> {
       builder: (context, Box<Task> box, Widget? child) {
         var tasks = box.values.toList();
 
+        print('Tasks loaded: ${tasks.length}'); // Debug print
+
         // for sorting list by date
         tasks.sort((a, b) => a.createdAtDate.compareTo(b.createdAtDate));
 

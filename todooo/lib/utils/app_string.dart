@@ -6,7 +6,8 @@ class AppString {
   static const String updateCurrentTask = "Update ";
   static const String taskString = "Task";
   static const String titleOfTitleTextField = "What are you planing😇?";
-  static const String addNote = 'Add Note';
+  static const String addTitle = 'Add Title';
+  static const String addSubTitle = 'Add Description';
   static const String timeString = "Time";
   static const String dateString = "Date";
   static const String deleteTask = "Delete Task";

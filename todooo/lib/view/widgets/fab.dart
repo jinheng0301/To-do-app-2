@@ -4,10 +4,6 @@ import 'package:todooo/utils/app_colors.dart';
 import 'package:todooo/view/screens/task_view.dart';
 
 class FAB extends StatelessWidget {
-  const FAB({
-    super.key,
-  });
-
   @override
   Widget build(BuildContext context) {
     final titleTaskController = TextEditingController();

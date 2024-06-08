@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class DateTimeSelectionWidget extends StatelessWidget {
   DateTimeSelectionWidget({
-    super.key,
     required this.onTap,
     required this.title,
   });

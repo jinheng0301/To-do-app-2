@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class TaskViewAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const TaskViewAppBar({super.key});
-
   Size get preferredSize => Size.fromHeight(150);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      color: Colors.green,
       width: double.infinity,
       height: 150,
       child: Row(

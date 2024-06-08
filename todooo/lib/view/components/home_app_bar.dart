@@ -52,7 +52,8 @@ class _HomeAppBarState extends State<HomeAppBar>
   Widget build(BuildContext context) {
     var base = BaseWidget.of(context).dataStore.box;
 
-    return SizedBox(
+    return Container(
+      color: Colors.yellow,
       width: double.infinity,
       height: 130,
       child: Padding(

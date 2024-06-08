@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todooo/utils/app_string.dart';
 
-class RepTextField extends StatelessWidget {
-  const RepTextField({
+class RepTextField2 extends StatelessWidget {
+  const RepTextField2({
     super.key,
     required this.controller,
     this.isForDescription = false,
@@ -27,7 +27,7 @@ class RepTextField extends StatelessWidget {
           cursorHeight: isForDescription ? 30 : null,
           style: TextStyle(color: Colors.black),
           decoration: InputDecoration(
-            hintText: isForDescription ? AppString.addTitle : null,
+            hintText: isForDescription ? AppString.addSubTitle : null,
             border: isForDescription ? InputBorder.none : null,
             counter: Container(),
             prefixIcon: isForDescription

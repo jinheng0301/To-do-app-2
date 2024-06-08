@@ -6,6 +6,7 @@ import 'package:todooo/models/task.dart';
 import 'package:todooo/view/screens/home_view.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   // init hive db before runApp
   await Hive.initFlutter();
 
@@ -19,7 +20,7 @@ Future<void> main() async {
   box.values.forEach((task) {
     if (task.createdAtTime.day != DateTime.now().day) {
       task.delete();
-    } else {}
+    }
   });
 
   runApp(

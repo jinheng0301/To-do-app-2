@@ -10,6 +10,7 @@ import 'package:todooo/utils/constants.dart';
 import 'package:todooo/view/components/task_view_app_bar.dart';
 import 'package:todooo/view/widgets/date_time_selection_widget.dart';
 import 'package:todooo/view/widgets/repeat_textfield.dart';
+import 'package:todooo/view/widgets/repeat_textfield2.dart';
 
 class TaskView extends StatefulWidget {
   TaskView({
@@ -32,7 +33,7 @@ class _TaskViewState extends State<TaskView> {
   DateTime? time;
   DateTime? date;
 
-  // if any task already exsit then return true otherwise false
+  // if any task already exist then return true otherwise false
   bool isTaskAlreadyExist() {
     return widget.titleTaskController.text.isNotEmpty ||
         widget.descriptionTaskController.text.isNotEmpty;
@@ -216,7 +217,9 @@ class _TaskViewState extends State<TaskView> {
   }
 
   SizedBox buildMainTaskViewActivity(
-      TextTheme textTheme, BuildContext context) {
+    TextTheme textTheme,
+    BuildContext context,
+  ) {
     return SizedBox(
       width: double.infinity,
       height: 400,
@@ -246,7 +249,7 @@ class _TaskViewState extends State<TaskView> {
           10.h,
 
           // task subTitle
-          RepTextField(
+          RepTextField2(
             controller: widget.descriptionTaskController,
             isForDescription: true,
             onFieldSubmitted: (String inputSubTitle) {

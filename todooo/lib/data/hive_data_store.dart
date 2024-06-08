@@ -14,6 +14,7 @@ class HiveDataStore {
   // add new task to box
   Future<void> addTask({required Task task}) async {
     await box.put(task.id, task);
+    print('Task added: ${task.title}'); // Debug print
   }
 
   // show task
